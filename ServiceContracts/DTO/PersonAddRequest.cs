@@ -5,12 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceContracts.Enums;
 using Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO
 {
     public class PersonAddRequest
     {
+        [Required(ErrorMessage ="Person Name cant be blank")]
         public string? PersonName { get; set; }
+        [Required(ErrorMessage ="Email cant be blank")]
+        [EmailAddress(ErrorMessage ="Email does not correct")]
         public string? Email { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public GenderOptions? Gender { get; set; }

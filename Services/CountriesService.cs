@@ -6,9 +6,6 @@ namespace Services
 {
     public class CountriesService : ICountriesService
     {
-
-        //private field
-
         private readonly List<Country> _countries;
 
         public CountriesService()
