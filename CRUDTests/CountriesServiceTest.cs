@@ -146,7 +146,6 @@ namespace CRUDTests
 
         #endregion
 
-
         #region GetCountryByCountryId
 
         [Fact]
@@ -192,6 +191,5 @@ namespace CRUDTests
 
         }
         #endregion
-
     }
 }
