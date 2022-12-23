@@ -92,8 +92,6 @@ namespace CRUDTests
                 CountryName = "Japan"
             };
 
-            
-
             //Act
             CountryResponse response = _countriesService.AddCountry(request);
             List<CountryResponse> countriesFromGetAllCountries = _countriesService.GetAllCountry();

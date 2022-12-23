@@ -44,12 +44,10 @@ namespace Services
 
             _countries.Add(country);
 
-            return country.ToCountryrespone();
+            return country.ToCountryRespone();
         }
 
-        public List<CountryResponse> GetAllCountry()
-        {
-            throw new NotImplementedException();
-        }
+        public List<CountryResponse> GetAllCountry() => _countries
+            .Select(p => p.ToCountryRespone()).ToList();
     }
 }
