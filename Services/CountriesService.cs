@@ -49,5 +49,10 @@ namespace Services
 
         public List<CountryResponse> GetAllCountry() => _countries
             .Select(p => p.ToCountryRespone()).ToList();
+
+        public CountryResponse? GetCountryByCountryId(Guid? CountryID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

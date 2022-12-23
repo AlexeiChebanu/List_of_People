@@ -14,13 +14,10 @@ namespace CRUDTests
     {
         private readonly ICountriesService _countriesService;
 
-
-
         public CountriesServiceTest()
         {
             _countriesService = new CountriesService();
         }
-
 
         #region AddCountry
         //When CountryAddRequest is null, it should throw ArgumentNullException
@@ -149,6 +146,52 @@ namespace CRUDTests
 
         #endregion
 
+
+        #region GetCountryByCountryId
+
+        [Fact]
+        //If we supply null as CountryID, it should return null as
+        //CountryResponse
+        public void GetCountryByCountryID_NullCountryID()
+        {
+            //Arrange
+            Guid? countrID= null;
+
+            //Act
+            CountryResponse? country_response_from_get_method = 
+                _countriesService.GetCountryByCountryId(countrID);
+
+            //Assert
+
+            Assert.Null(country_response_from_get_method);
+        }
+
+        [Fact]
+        //If we supply a valid country id, it should return the mathcing 
+        //country details as CountryResponse obj
+        public void GetCountryByCountryID_ValidCountryID()
+        {
+            //Arrange
+            CountryAddRequest? country_add_request = new
+                CountryAddRequest()
+            {
+                CountryName = "Australia"
+            };
+            CountryResponse country_response_from_add_request =
+                _countriesService.AddCountry(country_add_request);
+
+
+            //Act
+            
+           CountryResponse? country_response_from_get =
+                _countriesService.GetCountryByCountryId(country_response_from_add_request.CountryId);
+
+            //Assert
+
+            Assert.Equal(country_response_from_add_request, country_response_from_get);
+
+        }
+        #endregion
 
     }
 }

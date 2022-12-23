@@ -23,7 +23,7 @@ namespace ServiceContracts.DTO
 
             if(obj.GetType() != typeof(CountryResponse)) { return false; }
 
-            CountryResponse country_to_compare = obj as CountryResponse;
+            CountryResponse country_to_compare = (CountryResponse)obj;
 
 
             return this.CountryId == country_to_compare.CountryId 
