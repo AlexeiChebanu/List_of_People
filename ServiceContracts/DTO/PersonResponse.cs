@@ -27,27 +27,35 @@ namespace ServiceContracts.DTO
 
         public override bool Equals(object? obj)
         {
-            if (obj == null) { return false; }
+            if (obj == null) return false;
 
-            if(obj.GetType() != typeof(PersonResponse)) { return false; }
+            if (obj.GetType() != typeof(PersonResponse)) return false;
 
             PersonResponse person = (PersonResponse)obj;
-
-
-            return this.PersonID == person.CountryID 
-                && this.PersonName == person.PersonName 
-                && this.Email == person.Email &&this.DateOfBirth == person.DateOfBirth
-                && this.Gender == person.Gender &&this.CountryID== person.CountryID
-                && this.Address == person.Address && this.ReceiveNewsLetters && person.ReceiveNewsLetters;  
-        
-
+            return PersonID == person.PersonID 
+                && PersonName == person.PersonName 
+                && Email == person.Email 
+                && DateOfBirth == person.DateOfBirth 
+                && Gender == person.Gender 
+                && CountryID == person.CountryID 
+                && Address == person.Address 
+                && ReceiveNewsLetters == person.ReceiveNewsLetters;
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return $"Person ID: {PersonID}, Person Name: {PersonName}," +
+                $"Email : {Email}, Date of Birth: {DateOfBirth?.ToString("dd mm yy")}," +
+                $"Gender : {Gender}, Country Id : {CountryID}, Country: {Country}, Address: {Address}," +
+                $"Receive News Letters: {ReceiveNewsLetters}";
+        }
     }
+
 
     public static class PersonExtensions
     {
@@ -60,13 +68,13 @@ namespace ServiceContracts.DTO
                 PersonName = person.PersonName,
                 Email = person.Email,
                 DateOfBirth = person.DateOfBirth,
-                Gender = person.Gender,
-                Address = person.Address,
                 ReceiveNewsLetters = person.ReceiveNewsLetters,
+                Address = person.Address,
                 CountryID = person.CountryID,
-                Age = (person.DateOfBirth!= null)? Math.Round((DateTime.Now 
-                - person.DateOfBirth.Value).TotalDays/365.25) : null
+                Gender = person.Gender,
+                Age = (person.DateOfBirth != null) ? Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25) : null
             };
         }
     }
 }
+
