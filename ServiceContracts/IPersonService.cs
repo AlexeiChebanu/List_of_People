@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceContracts.DTO;
+using ServiceContracts.Enums;
 
 namespace ServiceContracts
 {
@@ -34,5 +35,15 @@ namespace ServiceContracts
         /// <param name="searchString">Search string to search</param>
         /// <returns>returns all matching persons based on the given search and search string</returns>
         List<PersonResponse> GetFilterdPersons(string searchBy, string? searchString);
+
+        /// <summary>
+        /// Returns sorted list of persons
+        /// </summary>
+        /// <param name="allPersons">Represents list of persons to sort</param>
+        /// <param name="sortBy">Name of the property(Key), based on which the persons
+        /// should be sorted</param>
+        /// <param name="sortOrder">Asc or Decs</param>
+        /// <returns>Returns sorted persons as PersonResponse List</returns>
+        List<PersonResponse> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder);
     }
 }

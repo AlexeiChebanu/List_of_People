@@ -225,7 +225,7 @@ namespace CRUDTests
         }
         #endregion
 
-        #region MyRegion
+        #region GetFilteredPersons
 
         //If the search text is empty and search by is "PersonName", it should return all persons
         [Fact]
@@ -383,6 +383,88 @@ namespace CRUDTests
             }
         }
 
+        #endregion
+
+        #region GetSortedPersons
+
+        //Sort based on PersonName in Desc, it should return persons list in descending on PersonName
+        [Fact]
+        public void GetSortedPesrons()
+        {
+            //Arrange
+            CountryAddRequest country_request_1 = new CountryAddRequest() { CountryName = "USA" };
+            CountryAddRequest country_request_2 = new CountryAddRequest() { CountryName = "Poland" };
+
+            CountryResponse country_response_1 = _countriesService.AddCountry(country_request_1);
+            CountryResponse country_response_2 = _countriesService.AddCountry(country_request_2);
+
+            PersonAddRequest person_request_1 = new PersonAddRequest()
+            {
+                PersonName = "Smith",
+                Email = "smith@gmail.com",
+                Gender = GenderOptions.Male,
+                Address = "address of smith",
+                CountryID = country_response_1.CountryId,
+                DateOfBirth = DateTime.Parse("2002-05-06"),
+                ReceiveNewsLetters = true
+            };
+
+            PersonAddRequest person_request_2 = new PersonAddRequest()
+            {
+                PersonName = "Mary",
+                Email = "mary@gmail.com",
+                Gender = GenderOptions.Female,
+                Address = "address of mary",
+                CountryID = country_response_2.CountryId,
+                DateOfBirth = DateTime.Parse("2000-02-02"),
+                ReceiveNewsLetters = false
+            };
+
+            PersonAddRequest person_request_3 = new PersonAddRequest()
+            {
+                PersonName = "Roman",
+                Email = "roman@gmail.com",
+                Gender = GenderOptions.Male,
+                Address = "address of rahman",
+                CountryID = country_response_2.CountryId,
+                DateOfBirth = DateTime.Parse("1999-03-03"),
+                ReceiveNewsLetters = true
+            };
+
+            List<PersonAddRequest> person_requests = new List<PersonAddRequest>() { person_request_1, person_request_2, person_request_3 };
+
+            List<PersonResponse> person_response_list_from_add = new List<PersonResponse>();
+
+            _testOutputHelper.WriteLine("Expected:");
+            foreach (PersonAddRequest person_request in person_requests)
+            {
+                PersonResponse person_response = _personService.AddPerson(person_request);
+                person_response_list_from_add.Add(person_response);
+            }
+            //print person_response_list_from_add
+            foreach (PersonResponse item in person_response_list_from_add)
+            {
+                _testOutputHelper.WriteLine(item.ToString());
+            }
+
+            List<PersonResponse> allPersons = _personService.GetAllPersons();
+            //Act
+            List<PersonResponse> persons_list_from_sort = _personService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.Desc);
+
+            //print person_response_list_from_get
+            foreach (PersonResponse item in persons_list_from_sort)
+            {
+                _testOutputHelper.WriteLine(item.ToString());
+            }
+
+            person_response_list_from_add = person_response_list_from_add.OrderByDescending(temp => temp.PersonName).ToList();
+
+            //Assert
+            for (int i = 0; i < person_response_list_from_add.Count; i++)
+            {
+                Assert.Equal(person_response_list_from_add[i], persons_list_from_sort[i]);
+            }
+        }
         #endregion
 
     }
