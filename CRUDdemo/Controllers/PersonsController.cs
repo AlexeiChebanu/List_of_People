@@ -9,16 +9,18 @@ namespace CRUD.Controllers
     {
         //private fields
         private readonly IPersonService _personsService;
+        private readonly ICountriesService _countriesService;
 
-        public PersonsController(IPersonService personsService)
+        public PersonsController(IPersonService personsService, ICountriesService countriesService)
         {
             _personsService = personsService;
+            _countriesService = countriesService;
         }
 
         [Route("persons/index")]
         [Route("/")]
         public IActionResult Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName),
-            SortOrderOptions sortOrder= SortOrderOptions.Asc)
+            SortOrderOptions sortOrder = SortOrderOptions.Asc)
         {
             //Search
             ViewBag.SearchFields = new Dictionary<string, string>()
@@ -32,7 +34,7 @@ namespace CRUD.Controllers
 
             };
 
-           List<PersonResponse> persons = _personsService.GetFilterdPersons(searchBy,searchString);
+            List<PersonResponse> persons = _personsService.GetFilterdPersons(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
 
@@ -43,6 +45,36 @@ namespace CRUD.Controllers
             ViewBag.CurrentSortOrder = sortOrder.ToString();
 
             return View(sortedPersons);
+        }
+
+        //Executes when the user clicks on "Create Person" hyperlink
+        //while opening the create view
+        [Route("persons/create")]
+        [HttpGet]
+        public IActionResult Create()
+        {
+            List<CountryResponse> countries = _countriesService.GetAllCountry();
+            ViewBag.Countries = countries;
+
+            return View();
+        }
+
+        [HttpPost]
+        [Route("persons/create")]
+        public IActionResult Create(PersonAddRequest personAddRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                List<CountryResponse> countries = _countriesService.GetAllCountry();
+                ViewBag.Countries = countries;
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e=>e.ErrorMessage).ToList(); 
+                return View();
+            }
+            //call the service method
+           PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
+
+            //navigate to Index() action method(it makes another ger request to "persons/indexf")
+            return RedirectToAction("Index", "Persons");
         }
     }
 }
