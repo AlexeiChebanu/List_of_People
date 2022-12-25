@@ -118,13 +118,13 @@ namespace CRUDTests
             CountryResponse country_response = _countriesService.AddCountry(country_request);
 
             PersonAddRequest person_request = new PersonAddRequest() {
-                PersonName = "person name...", 
-                Email = "email@sample.com", 
-                Address = "address", 
-                CountryID = country_response.CountryId, 
-                DateOfBirth = DateTime.Parse("2000-01-01"), 
-                Gender = GenderOptions.Male, 
-                ReceiveNewsLetters = false 
+                PersonName = "person name...",
+                Email = "email@sample.com",
+                Address = "address",
+                CountryID = country_response.CountryId,
+                DateOfBirth = DateTime.Parse("2000-01-01"),
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters = false
             };
 
             PersonResponse person_response_from_add = _personService.AddPerson(person_request);
@@ -162,35 +162,35 @@ namespace CRUDTests
             CountryResponse country_response_1 = _countriesService.AddCountry(country_request_1);
             CountryResponse country_response_2 = _countriesService.AddCountry(country_request_2);
 
-            PersonAddRequest person_request_1 = new PersonAddRequest() 
-            { 
-                PersonName = "Smith", 
-                Email = "smith@gmail.com", 
+            PersonAddRequest person_request_1 = new PersonAddRequest()
+            {
+                PersonName = "Smith",
+                Email = "smith@gmail.com",
                 Gender = GenderOptions.Male,
-                Address = "address of smith", 
-                CountryID = country_response_1.CountryId, 
-                DateOfBirth = DateTime.Parse("2002-05-06"), 
-                ReceiveNewsLetters = true 
+                Address = "address of smith",
+                CountryID = country_response_1.CountryId,
+                DateOfBirth = DateTime.Parse("2002-05-06"),
+                ReceiveNewsLetters = true
             };
 
-            PersonAddRequest person_request_2 = new PersonAddRequest() { 
-                PersonName = "Mary", 
-                Email = "mary@gmail.com", 
-                Gender = GenderOptions.Female, 
-                Address = "address of mary", 
-                CountryID = country_response_2.CountryId, 
-                DateOfBirth = DateTime.Parse("2000-02-02"), 
-                ReceiveNewsLetters = false 
-            };
-
-            PersonAddRequest person_request_3 = new PersonAddRequest() { 
-                PersonName = "Roman", 
-                Email = "roman@gmail.com", 
-                Gender = GenderOptions.Male,
-                Address = "address of rahman", 
+            PersonAddRequest person_request_2 = new PersonAddRequest() {
+                PersonName = "Mary",
+                Email = "mary@gmail.com",
+                Gender = GenderOptions.Female,
+                Address = "address of mary",
                 CountryID = country_response_2.CountryId,
-                DateOfBirth = DateTime.Parse("1999-03-03"), 
-                ReceiveNewsLetters = true 
+                DateOfBirth = DateTime.Parse("2000-02-02"),
+                ReceiveNewsLetters = false
+            };
+
+            PersonAddRequest person_request_3 = new PersonAddRequest() {
+                PersonName = "Roman",
+                Email = "roman@gmail.com",
+                Gender = GenderOptions.Male,
+                Address = "address of rahman",
+                CountryID = country_response_2.CountryId,
+                DateOfBirth = DateTime.Parse("1999-03-03"),
+                ReceiveNewsLetters = true
             };
 
             List<PersonAddRequest> person_requests = new List<PersonAddRequest>() { person_request_1, person_request_2, person_request_3 };
@@ -379,7 +379,7 @@ namespace CRUDTests
                     {
                         Assert.Contains(person_response_from_add, persons_list_from_search);
                     }
-                }          
+                }
             }
         }
 
@@ -465,6 +465,117 @@ namespace CRUDTests
                 Assert.Equal(person_response_list_from_add[i], persons_list_from_sort[i]);
             }
         }
+        #endregion
+
+        #region UpdatePerson
+        //Supply null as PersonUpdateRequest, it should throw ArgumentNullException
+
+        [Fact]
+        public void UpdatePerson_NullPerson()
+        {
+            //Arrange
+            PersonUpdateRequest? personUpdateRequest = null;
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                //Act
+                _personService.UpdatePerson(personUpdateRequest);
+            });
+        }
+
+        //Supply invalid person id, it should throw ArgumentException
+
+        [Fact]
+        public void UpdatePerson_isIdInvalid()
+        {
+            //Arrange
+            PersonUpdateRequest? personUpdateRequest = new PersonUpdateRequest()
+            {
+                PersonID = Guid.NewGuid()
+            };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _personService.UpdatePerson(personUpdateRequest);
+
+            });
+        }
+
+        //PersonName is null, it should throw ArgumentException
+        [Fact]
+        public void UpdatePerson_PersonNameIsNull()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest()
+            {
+                CountryName = "UK"
+            };
+
+            CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+            PersonAddRequest personAddRequest = new PersonAddRequest()
+            {
+                PersonName = "John",
+                CountryID = countryResponse.CountryId
+            };
+
+            PersonResponse personResponse = _personService.AddPerson(personAddRequest);
+
+            PersonUpdateRequest? personUpdateRequest= personResponse.ToPersonUpdateRequest();
+
+            personUpdateRequest = null;
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _personService.UpdatePerson(personUpdateRequest);
+            });
+        }
+
+        //Add a new person and try to update the person and email
+        [Fact]
+        public void UpdatePerson_FullDatails()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest()
+            {
+                CountryName = "UK"
+            };
+
+            CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+            PersonAddRequest personAddRequest = new PersonAddRequest()
+            {
+                PersonName = "John",
+                CountryID = countryResponse.CountryId,
+                Address = "Address",
+                DateOfBirth = DateTime.Parse("2000-01-01"),
+                Email = "John@gmail.com",
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters= true
+            };
+
+            PersonResponse personResponse = _personService.AddPerson(personAddRequest);
+
+            PersonUpdateRequest? personUpdateRequest = personResponse.ToPersonUpdateRequest();
+
+            personUpdateRequest.PersonName = "William";
+            personUpdateRequest.Email = "will@gmail.com";
+
+            //Act
+            PersonResponse personResponseFromUpdate = _personService.UpdatePerson(personUpdateRequest);
+
+            PersonResponse? personResponseFrom_get =  _personService.GetPersonByPersonID(personUpdateRequest.PersonID);
+
+            //Assert
+            Assert.Equal(personResponseFrom_get, personResponseFromUpdate);
+        }
+
+
         #endregion
 
     }
