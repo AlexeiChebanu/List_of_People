@@ -174,7 +174,7 @@ namespace Services
         }
 
         public List<PersonResponse> GetAllPersons() 
-            => _persons.Select(n => n.ToPersonResponse()).ToList();
+            => _persons.Select(n => ConvertPersonToPersonResponse(n)).ToList();
 
 
         public PersonResponse? GetPersonByPersonID(Guid? personID)
@@ -186,7 +186,7 @@ namespace Services
             if (person == null)
                 return null;
 
-            return person.ToPersonResponse();
+            return ConvertPersonToPersonResponse(person);
         }
 
         public List<PersonResponse> GetFilterdPersons(string searchBy, string? searchString)
@@ -339,7 +339,7 @@ namespace Services
             matchingPerson.Gender = personUpdateRequest.Gender.ToString();
             matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
 
-            return matchingPerson.ToPersonResponse();
+            return ConvertPersonToPersonResponse(matchingPerson);
 
         }
 
