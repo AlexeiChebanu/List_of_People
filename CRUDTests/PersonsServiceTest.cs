@@ -504,7 +504,7 @@ namespace CRUDTests
             });
         }
 
-        //PersonName is null, it should throw ArgumentException
+        //PersonName is null, it should throw ArgumentNullException
         [Fact]
         public void UpdatePerson_PersonNameIsNull()
         {
@@ -519,7 +519,9 @@ namespace CRUDTests
             PersonAddRequest personAddRequest = new PersonAddRequest()
             {
                 PersonName = "John",
-                CountryID = countryResponse.CountryId
+                CountryID = countryResponse.CountryId,
+                Email = "john@gmail.com",
+                Gender= GenderOptions.Male
             };
 
             PersonResponse personResponse = _personService.AddPerson(personAddRequest);
@@ -529,7 +531,7 @@ namespace CRUDTests
             personUpdateRequest = null;
 
             //Assert
-            Assert.Throws<ArgumentException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 //Act
                 _personService.UpdatePerson(personUpdateRequest);
@@ -578,5 +580,54 @@ namespace CRUDTests
 
         #endregion
 
+        #region DeletePerson
+
+        //Supply a valid PersonId, it should return true
+        [Fact]
+        public void DeletePerson_isValid()
+        {
+            //Arrange
+            CountryAddRequest country_add_request = new CountryAddRequest()
+            {
+                CountryName = "Germany"
+            };
+            var country_response_from_add = _countriesService.AddCountry(country_add_request);
+
+            PersonAddRequest personAddRequest = new PersonAddRequest()
+            {
+                PersonName = "Janiten",
+                Address = "address",
+                CountryID = country_response_from_add.CountryId,
+                DateOfBirth = Convert.ToDateTime("2000-01-01"),
+                Email = "janiten@gmail.com",
+                Gender = GenderOptions.Male,
+                ReceiveNewsLetters = true
+            };
+
+            var addPerson = _personService.AddPerson(personAddRequest);
+
+            //Act
+            bool isDeleted = _personService.DeletePerson(addPerson.PersonID);
+
+            //Assert
+
+            Assert.True(isDeleted);
+
+        }
+
+        
+        [Fact]
+        public void DeletePerson_isEmpty()
+        {
+            //Act
+            bool isDeleted = _personService.DeletePerson(Guid.NewGuid());
+
+            //Assert
+
+            Assert.False(isDeleted);
+
+        }
+
+        #endregion
     }
 }
