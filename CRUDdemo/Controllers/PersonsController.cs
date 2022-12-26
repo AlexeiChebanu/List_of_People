@@ -56,12 +56,13 @@ namespace CRUD.Controllers
         public IActionResult Create()
         {
             List<CountryResponse> countries = _countriesService.GetAllCountry();
-            ViewBag.Countries = countries.Select(t=> new SelectListItem()
+            ViewBag.Countries = countries.Select(t => new SelectListItem()
             {
-                Text= t.CountryName, Value=t.CountryId.ToString()
+                Text = t.CountryName,
+                Value = t.CountryId.ToString()
             });
 
-            
+
 
             return View();
         }
@@ -74,14 +75,60 @@ namespace CRUD.Controllers
             {
                 List<CountryResponse> countries = _countriesService.GetAllCountry();
                 ViewBag.Countries = countries;
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e=>e.ErrorMessage).ToList(); 
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                 return View();
             }
             //call the service method
-           PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
+            PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
 
             //navigate to Index() action method(it makes another ger request to "persons/indexf")
             return RedirectToAction("Index", "Persons");
+        }
+
+        [HttpGet]
+        [Route("[action]/{personID}")] //Eg: /persons/edit/1
+        public IActionResult Edit(Guid personID)
+        {
+            PersonResponse? personResponse = _personsService.GetPersonByPersonID(personID);
+            if (personResponse == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            PersonUpdateRequest personUpdateRequest = personResponse.ToPersonUpdateRequest();
+
+            List<CountryResponse> countries = _countriesService.GetAllCountry();
+            ViewBag.Countries = countries.Select(temp =>
+            new SelectListItem() { Text = temp.CountryName, Value = temp.CountryId.ToString() });
+
+            return View(personUpdateRequest);
+        }
+
+        [HttpPost]
+        [Route("[action]/{personID}")]
+        public IActionResult Edit(PersonUpdateRequest personUpdateRequest)
+        {
+            PersonResponse? personResponse = _personsService.GetPersonByPersonID(personUpdateRequest.PersonID);
+
+            if (personResponse == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (ModelState.IsValid)
+            {
+                PersonResponse updatedPerson = _personsService.UpdatePerson(personUpdateRequest);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                List<CountryResponse> countries = _countriesService.GetAllCountry();
+                ViewBag.Countries = countries.Select(temp =>
+                new SelectListItem() { Text = temp.CountryName, Value = temp.CountryId.ToString() });
+
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return View();
+            }
         }
     }
 }

@@ -101,6 +101,7 @@
 
             })
 
+            <th>Options</th>
            
         </tr>
     </thead>
@@ -114,8 +115,12 @@
                 <td class ="width:9%">@person.Age</td>
                 <td class="width:9%">@person.Gender</td>
                 <td class="width:10%">@person.Country</td>
-                <td class="width:10%">@person.Address</td>
+                <td class="width:15%">@person.Address</td>
                 <td class="width:20%">@person.ReceiveNewsLetters</td>
+                <td style="width:20%">
+                    <a asp-controller="Persons" asp-action="Edit" asp-route-personID="@person.PersonID">Edit</a>
+                    @* /Persons/Edit/1 *@
+                </td>
             </tr>
         }
         <tr>
