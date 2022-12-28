@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(PersonDbContext))]
-    [Migration("20221227194256_Initial")]
+    [Migration("20221228125335_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,27 +41,27 @@ namespace Entities.Migrations
                         new
                         {
                             CountryId = new Guid("14629847-905a-4a0e-9abe-80b61655c5cb"),
-                            CountryName = "Philippines"
+                            CountryName = "UK"
                         },
                         new
                         {
                             CountryId = new Guid("56bf46a4-02b8-4693-a0f5-0a95e2218bdc"),
-                            CountryName = "Thailand"
+                            CountryName = "USA"
                         },
                         new
                         {
                             CountryId = new Guid("12e15727-d369-49a9-8b13-bc22e9362179"),
-                            CountryName = "China"
+                            CountryName = "Ukraine"
                         },
                         new
                         {
                             CountryId = new Guid("8f30bedc-47dd-4286-8950-73d8a68e5d41"),
-                            CountryName = "Palestinian Territory"
+                            CountryName = "Poland"
                         },
                         new
                         {
                             CountryId = new Guid("501c6d33-1bbe-45f1-8fbd-2275913c6218"),
-                            CountryName = "China"
+                            CountryName = "Canada"
                         });
                 });
 
@@ -107,7 +107,7 @@ namespace Entities.Migrations
                             Address = "4 Parkside Point",
                             CountryID = new Guid("56bf46a4-02b8-4693-a0f5-0a95e2218bdc"),
                             DateOfBirth = new DateTime(1989, 8, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mwebsdale0@people.com.cn",
+                            Email = "mwebsdale0@gmail.com",
                             Gender = "Female",
                             PersonName = "Marguerite",
                             ReceiveNewsLetters = false
@@ -118,7 +118,7 @@ namespace Entities.Migrations
                             Address = "6 Morningstar Circle",
                             CountryID = new Guid("14629847-905a-4a0e-9abe-80b61655c5cb"),
                             DateOfBirth = new DateTime(1990, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ushears1@globo.com",
+                            Email = "ushears1@gmail.com",
                             Gender = "Female",
                             PersonName = "Ursa",
                             ReceiveNewsLetters = false
@@ -129,7 +129,7 @@ namespace Entities.Migrations
                             Address = "73 Heath Avenue",
                             CountryID = new Guid("14629847-905a-4a0e-9abe-80b61655c5cb"),
                             DateOfBirth = new DateTime(1995, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "fbowsher2@howstuffworks.com",
+                            Email = "fbowsher2@gmail.com",
                             Gender = "Male",
                             PersonName = "Franchot",
                             ReceiveNewsLetters = true
@@ -140,7 +140,7 @@ namespace Entities.Migrations
                             Address = "83187 Merry Drive",
                             CountryID = new Guid("12e15727-d369-49a9-8b13-bc22e9362179"),
                             DateOfBirth = new DateTime(1987, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "asarvar3@dropbox.com",
+                            Email = "asarvar3@gmail.com",
                             Gender = "Male",
                             PersonName = "Angie",
                             ReceiveNewsLetters = true
@@ -151,7 +151,7 @@ namespace Entities.Migrations
                             Address = "50467 Holy Cross Crossing",
                             CountryID = new Guid("56bf46a4-02b8-4693-a0f5-0a95e2218bdc"),
                             DateOfBirth = new DateTime(1995, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ttregona4@stumbleupon.com",
+                            Email = "ttregona4@gmail.com",
                             Gender = "Gender",
                             PersonName = "Tani",
                             ReceiveNewsLetters = false
@@ -162,7 +162,7 @@ namespace Entities.Migrations
                             Address = "97570 Raven Circle",
                             CountryID = new Guid("8f30bedc-47dd-4286-8950-73d8a68e5d41"),
                             DateOfBirth = new DateTime(1988, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mlingfoot5@netvibes.com",
+                            Email = "mlingfoot5@gmail.com",
                             Gender = "Male",
                             PersonName = "Mitchael",
                             ReceiveNewsLetters = false
@@ -173,7 +173,7 @@ namespace Entities.Migrations
                             Address = "57449 Brown Way",
                             CountryID = new Guid("12e15727-d369-49a9-8b13-bc22e9362179"),
                             DateOfBirth = new DateTime(1983, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mjarrell6@wisc.edu",
+                            Email = "mjarrell6@gmail.com",
                             Gender = "Male",
                             PersonName = "Maddy",
                             ReceiveNewsLetters = true
@@ -184,7 +184,7 @@ namespace Entities.Migrations
                             Address = "4 Stuart Drive",
                             CountryID = new Guid("12e15727-d369-49a9-8b13-bc22e9362179"),
                             DateOfBirth = new DateTime(1998, 12, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "pretchford7@virginia.edu",
+                            Email = "pretchford7@gmail.com",
                             Gender = "Female",
                             PersonName = "Pegeen",
                             ReceiveNewsLetters = true
@@ -195,7 +195,7 @@ namespace Entities.Migrations
                             Address = "413 Sachtjen Way",
                             CountryID = new Guid("12e15727-d369-49a9-8b13-bc22e9362179"),
                             DateOfBirth = new DateTime(1990, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "hmosco8@tripod.com",
+                            Email = "hmosco8@gmail.com",
                             Gender = "Male",
                             PersonName = "Hansiain",
                             ReceiveNewsLetters = true
@@ -206,7 +206,7 @@ namespace Entities.Migrations
                             Address = "484 Clarendon Court",
                             CountryID = new Guid("8f30bedc-47dd-4286-8950-73d8a68e5d41"),
                             DateOfBirth = new DateTime(1997, 9, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "lwoodwing9@wix.com",
+                            Email = "lwoodwing9@gmail.com",
                             Gender = "Male",
                             PersonName = "Lombard",
                             ReceiveNewsLetters = false
@@ -217,7 +217,7 @@ namespace Entities.Migrations
                             Address = "2 Warrior Avenue",
                             CountryID = new Guid("501c6d33-1bbe-45f1-8fbd-2275913c6218"),
                             DateOfBirth = new DateTime(1990, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "mconachya@va.gov",
+                            Email = "mconachya@gmail.com",
                             Gender = "Female",
                             PersonName = "Minta",
                             ReceiveNewsLetters = true
@@ -228,7 +228,7 @@ namespace Entities.Migrations
                             Address = "9334 Fremont Street",
                             CountryID = new Guid("501c6d33-1bbe-45f1-8fbd-2275913c6218"),
                             DateOfBirth = new DateTime(1987, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "vklussb@nationalgeographic.com",
+                            Email = "vklussb@gmail.com",
                             Gender = "Female",
                             PersonName = "Verene",
                             ReceiveNewsLetters = true

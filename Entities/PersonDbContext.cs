@@ -27,7 +27,7 @@ namespace Entities
             //Seed to Countries
             string countriesJSON = File.ReadAllText("countries.json");
 
-           List<Country>? countries = System.Text.Json.JsonSerializer.Deserialize<List<Country>>(countriesJSON);
+           List<Country> countries = System.Text.Json.JsonSerializer.Deserialize<List<Country>>(countriesJSON);
 
 
             foreach (Country country in countries)
@@ -37,7 +37,7 @@ namespace Entities
 
             string personsJSON = File.ReadAllText("person.json");
 
-            List<Person>? persons = System.Text.Json.JsonSerializer.Deserialize<List<Person>>(personsJSON);
+            List<Person> persons = System.Text.Json.JsonSerializer.Deserialize<List<Person>>(personsJSON);
 
 
             foreach (Person person in persons)
