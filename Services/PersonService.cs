@@ -52,7 +52,11 @@ namespace Services
         }
 
         public List<PersonResponse> GetAllPersons()
-            => _db.Persons.ToList().Select(n => ConvertPersonToPersonResponse(n)).ToList();
+        { 
+            /*return _db.Persons.ToList().Select(n => ConvertPersonToPersonResponse(n)).ToList(); */
+
+            return _db.sp_GetALlPersons().Select(n => ConvertPersonToPersonResponse(n)).ToList();
+        }
 
 
         public PersonResponse? GetPersonByPersonID(Guid? personID)

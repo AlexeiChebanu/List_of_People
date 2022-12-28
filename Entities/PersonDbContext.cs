@@ -13,6 +13,7 @@ namespace Entities
         {
 
         }
+
         public DbSet<Country> Countries { get; set; }
         public DbSet<Person> Persons { get; set;}
 
@@ -45,6 +46,11 @@ namespace Entities
                 modelBuilder.Entity<Person>().HasData(person);
             }
 
+        }
+
+        public List<Person> sp_GetALlPersons()
+        {
+            return Persons.FromSqlRaw("EXECUTE [dbo].[GetAllPersons]").ToList();
         }
     }
 }
