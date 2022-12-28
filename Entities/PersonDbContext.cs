@@ -29,7 +29,7 @@ namespace Entities
             //Seed to Countries
             string countriesJSON = File.ReadAllText("countries.json");
 
-           List<Country> countries = System.Text.Json.JsonSerializer.Deserialize<List<Country>>(countriesJSON);
+            List<Country> countries = System.Text.Json.JsonSerializer.Deserialize<List<Country>>(countriesJSON);
 
 
             foreach (Country country in countries)
@@ -47,6 +47,18 @@ namespace Entities
                 modelBuilder.Entity<Person>().HasData(person);
             }
 
+            //Fluent API
+
+            modelBuilder.Entity<Person>().Property(temp => temp.TIN)
+                                        .HasColumnName("TaxIdentificationNumber")
+                                        .HasColumnType("varchar(8)")
+                                        .HasDefaultValue("ABC12345");
+
+            /*modelBuilder.Entity<Person>()
+                        .HasIndex(temp => temp.TIN)
+                        .IsUnique();*/
+
+            modelBuilder.Entity<Person>().HasCheckConstraint("CHK_TIN", "len([TaxIdentificationNumber]) = 8");
         }
 
         public List<Person> sp_GetALlPersons()

@@ -44,10 +44,10 @@ namespace Services
             //generate PersonID
             person.PersonID = Guid.NewGuid();
 
-            /*_db.Persons.Add(person);
-            _db.SaveChanges();*/
+            _db.Persons.Add(person);
+            _db.SaveChanges();
 
-            _db.sp_InsertPerson(person);
+            /*_db.sp_InsertPerson(person);*/
 
             //convert the Person obj into PersonResponse type
             return ConvertPersonToPersonResponse(person);
@@ -55,9 +55,11 @@ namespace Services
 
         public List<PersonResponse> GetAllPersons()
         { 
-            /*return _db.Persons.ToList().Select(n => ConvertPersonToPersonResponse(n)).ToList(); */
+            return _db.Persons.ToList().Select(n => ConvertPersonToPersonResponse(n)).ToList(); 
 
-            return _db.sp_GetALlPersons().Select(n => ConvertPersonToPersonResponse(n)).ToList();
+            //return _db.sp_GetALlPersons().Select(n => ConvertPersonToPersonResponse(n)).ToList();
+
+
         }
 
 
