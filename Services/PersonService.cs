@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -22,13 +23,7 @@ namespace Services
             _db = personDbContext;
             _countriesService = countriesService;
         }
-        private PersonResponse ConvertPersonToPersonResponse(Person person)
-        {
-            PersonResponse personResponse = person.ToPersonResponse();
-            personResponse.Country = _countriesService.GetCountryByCountryId(person.CountryID)?.CountryName;
-            return personResponse;
-
-        }
+        
         public PersonResponse AddPerson(PersonAddRequest? personAddRequest)
         {
             //check if PersonAddRequest is not null
@@ -50,12 +45,15 @@ namespace Services
             /*_db.sp_InsertPerson(person);*/
 
             //convert the Person obj into PersonResponse type
-            return ConvertPersonToPersonResponse(person);
+            return person.ToPersonResponse();
         }
 
         public List<PersonResponse> GetAllPersons()
-        { 
-            return _db.Persons.ToList().Select(n => ConvertPersonToPersonResponse(n)).ToList(); 
+        {
+            var persons = _db.Persons.Include("Country").ToList();
+
+
+            return persons.Select(n => n.ToPersonResponse()).ToList(); 
 
             //return _db.sp_GetALlPersons().Select(n => ConvertPersonToPersonResponse(n)).ToList();
 
@@ -68,11 +66,11 @@ namespace Services
             if (personID == null)
                 return null;
 
-            Person? person = _db.Persons.FirstOrDefault(temp => temp.PersonID == personID);
+            Person? person = _db.Persons.Include("Country").FirstOrDefault(temp => temp.PersonID == personID);
             if (person == null)
                 return null;
 
-            return ConvertPersonToPersonResponse(person);
+            return person.ToPersonResponse();
         }
 
         public List<PersonResponse> GetFilterdPersons(string searchBy, string? searchString)
@@ -227,7 +225,7 @@ namespace Services
 
             _db.SaveChanges(); //upd
 
-            return ConvertPersonToPersonResponse(matchingPerson);
+            return matchingPerson.ToPersonResponse();
 
         }
 
