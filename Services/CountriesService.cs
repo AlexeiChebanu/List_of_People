@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
@@ -13,7 +14,7 @@ namespace Services
             _db = personDbContext;
         }
 
-        public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+        public async Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest)
         {
             //Validation: countryAddRequest cant be null
             if (countryAddRequest == null)
@@ -28,7 +29,7 @@ namespace Services
             }
 
             //Validation: countryName cant be twice
-            if (_db.Countries.Count(p => p.CountryName == countryAddRequest.CountryName) > 0)
+            if (await _db.Countries.CountAsync(p => p.CountryName == countryAddRequest.CountryName) > 0)
             {
                 throw new ArgumentException("Given country name already exists");
             }
@@ -40,23 +41,23 @@ namespace Services
 
 
             _db.Countries.Add(country);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return country.ToCountryRespone();
         }
 
-        public List<CountryResponse> GetAllCountry()
+        public async Task<List<CountryResponse>> GetAllCountry()
         {
-            return _db.Countries.Select(p => p.ToCountryRespone()).ToList();
+            return await _db.Countries.Select(p => p.ToCountryRespone()).ToListAsync();
         }
 
-        public CountryResponse? GetCountryByCountryId(Guid? countryID)
+        public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryID)
         {
             if (countryID == null)
                 return null;
 
             Country? country_response_from_list =
-                _db.Countries.FirstOrDefault(n => n.CountryId == countryID);
+                await _db.Countries.FirstOrDefaultAsync(n => n.CountryId == countryID);
 
             if (country_response_from_list == null)
                 return null;

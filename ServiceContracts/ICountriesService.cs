@@ -1,5 +1,6 @@
 ﻿using Entities;
 using ServiceContracts.DTO;
+using System.Threading.Tasks;
 
 namespace ServiceContracts
 {
@@ -16,20 +17,20 @@ namespace ServiceContracts
         /// <param name="countryAddRequest">Country object to add</param>
         /// <returns>Returns the country object after adding it
         /// (including newly generated country id) </returns>
-        CountryResponse AddCountry(CountryAddRequest? countryAddRequest);
+        Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest);
 
         /// <summary>
         /// Returns all countries fro, the list
         /// </summary>
         /// <returns></returns>
-        List<CountryResponse> GetAllCountry();
+        Task<List<CountryResponse>> GetAllCountry();
 
         /// <summary>
         /// Returns a country obj based on the given country id
         /// </summary>
         /// <param name="CountryID">CountryID(guid) to search</param>
         /// <returns>Matching cpuntry as CountryResponse obj</returns>
-        CountryResponse? GetCountryByCountryId(Guid? CountryID);
+        Task<CountryResponse?> GetCountryByCountryId(Guid? CountryID);
     }
 }
 
