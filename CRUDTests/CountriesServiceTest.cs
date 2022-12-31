@@ -30,7 +30,7 @@ namespace CRUDTests
 
             dbContextMock.CreateDbSetMock(t => t.Countries, countriesInitialData);
             
-            _countriesService = new CountriesService(dbContext);
+            _countriesService = new CountriesService(null);
         }
 
         #region AddCountry
