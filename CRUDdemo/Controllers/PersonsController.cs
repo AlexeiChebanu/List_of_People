@@ -75,9 +75,9 @@ namespace CRUD.Controllers
             if (!ModelState.IsValid)
             {
                 List<CountryResponse> countries = await _countriesService.GetAllCountry();
-                ViewBag.Countries = countries;
+                ViewBag.Countries = countries.Select(temp => new SelectListItem() { Text = temp.CountryName, Value = temp.CountryId.ToString() });
                 ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                return View();
+                return View(personAddRequest);
             }
             //call the service method
             PersonResponse personResponse = await _personsService.AddPerson(personAddRequest);

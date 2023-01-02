@@ -32,7 +32,7 @@ namespace Services
             }
 
             //Validation: countryName cant be twice
-            if (await _countriesRepository.GetCountryByCountryName(countryAddRequest.CountryName) != null) ;
+            if (await _countriesRepository.GetCountryByCountryName(countryAddRequest.CountryName) != null)
             {
                 throw new ArgumentException("Given country name already exists");
             }
