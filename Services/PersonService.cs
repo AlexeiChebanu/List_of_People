@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using RepositoryContracts;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using SerilogTimings;
 
 namespace Services
 {
@@ -24,10 +26,12 @@ namespace Services
     {
         private readonly IPersonsRepository _personsRepository;
         private readonly ILogger<PersonService> _logger;
-        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger)
+        private readonly IDiagnosticContext _diagnosticContext;
+        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger, IDiagnosticContext diagnosticContext)
         {
             _personsRepository = personsRepository;
             _logger = logger;
+            _diagnosticContext = diagnosticContext;
         }
         
         public async Task<PersonResponse> AddPerson(PersonAddRequest? personAddRequest)
@@ -80,34 +84,44 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetFilterdPersons(string searchBy, string? searchString)
         {
-            List<Person> persons = searchBy switch
+            _logger.LogInformation("GetFilteredPersons of PersonsService");
+            List<Person> persons;
+
+            using (Operation.Time("Time for Filtered Persons from Database"))
             {
-                nameof(PersonResponse.PersonName) =>
-                    await _personsRepository.GetFillteredPersons(temp =>
-                    temp.PersonName.Contains(searchString)),
+                persons = searchBy switch
+                {
+                    nameof(PersonResponse.PersonName) =>
+                        await _personsRepository.GetFillteredPersons(temp =>
+                        temp.PersonName.Contains(searchString)),
 
-                nameof(PersonResponse.Email) =>
-                    await _personsRepository.GetFillteredPersons(temp =>
-                    temp.Email.Contains(searchString)),
+                    nameof(PersonResponse.Email) =>
+                        await _personsRepository.GetFillteredPersons(temp =>
+                        temp.Email.Contains(searchString)),
 
-                nameof(PersonResponse.DateOfBirth) =>
-                    await _personsRepository.GetFillteredPersons(temp =>
-                    temp.DateOfBirth.Value.ToString("dd MMMM yyyy").Contains(searchString)),
+                    nameof(PersonResponse.DateOfBirth) =>
+                        await _personsRepository.GetFillteredPersons(temp =>
+                        temp.DateOfBirth.Value.ToString("dd MMMM yyyy").Contains(searchString)),
 
-                nameof(PersonResponse.Gender) =>
-                    await _personsRepository.GetFillteredPersons(temp =>
-                    temp.Gender.Contains(searchString)),
+                    nameof(PersonResponse.Gender) =>
+                        await _personsRepository.GetFillteredPersons(temp =>
+                        temp.Gender.Contains(searchString)),
 
-                nameof(PersonResponse.CountryID) =>
-                     await _personsRepository.GetFillteredPersons(temp =>
-                     temp.Country.CountryName.Contains(searchString)),
+                    nameof(PersonResponse.CountryID) =>
+                         await _personsRepository.GetFillteredPersons(temp =>
+                         temp.Country.CountryName.Contains(searchString)),
 
-                nameof(PersonResponse.Address) =>
-                    await _personsRepository.GetFillteredPersons(temp =>
-                    temp.Address.Contains(searchString)),
+                    nameof(PersonResponse.Address) =>
+                        await _personsRepository.GetFillteredPersons(temp =>
+                        temp.Address.Contains(searchString)),
 
-                _ => await _personsRepository.GetAllPersons()
-            };
+                    _ => await _personsRepository.GetAllPersons()
+                };
+            }//end of "using block" of serilog timings
+
+
+            _diagnosticContext.Set("Persons", persons);
+
             return persons.Select(t => t.ToPersonResponse()).ToList();
         }
 

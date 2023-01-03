@@ -18,6 +18,10 @@ using RepositoryContracts;
 using Moq;
 using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System.Linq.Expressions;
+using CRUD.Controllers;
+using Microsoft.Extensions.Logging;
+using Serilog.Extensions.Hosting;
+using Serilog;
 
 namespace CRUDTests
 {
@@ -34,8 +38,10 @@ namespace CRUDTests
             _fixture = new Fixture();
             _personRepositoryMock = new Mock<IPersonsRepository>();
             _personsRepository = _personRepositoryMock.Object;
+            var diagnosticContextMock = new Mock<IDiagnosticContext>();
+            var loggerMock = new Mock<ILogger<PersonService>>();
 
-            _personService = new PersonService(_personsRepository);
+            _personService = new PersonService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
 
             _testOutputHelper = testOutputHelper;
         }

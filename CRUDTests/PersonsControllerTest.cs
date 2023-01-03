@@ -13,6 +13,7 @@ using ServiceContracts.Enums;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Microsoft.Extensions.Logging;
 
 namespace CRUDTests
 {
@@ -23,6 +24,7 @@ namespace CRUDTests
 
         private readonly Mock<IPersonService> _mockPersonService;
         private readonly Mock<ICountriesService> _mockCountriesService;
+
 
         private readonly Fixture _fixture;
 
