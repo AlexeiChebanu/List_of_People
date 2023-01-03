@@ -16,15 +16,18 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using RepositoryContracts;
+using Microsoft.Extensions.Logging;
 
 namespace Services
 {
     public class PersonService : IPersonService
     {
         private readonly IPersonsRepository _personsRepository;
-        public PersonService(IPersonsRepository personsRepository)
+        private readonly ILogger<PersonService> _logger;
+        public PersonService(IPersonsRepository personsRepository, ILogger<PersonService> logger)
         {
             _personsRepository = personsRepository;
+            _logger = logger;
         }
         
         public async Task<PersonResponse> AddPerson(PersonAddRequest? personAddRequest)
@@ -52,6 +55,8 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetAllPersons()
         {
+            _logger.LogInformation("GetAllPersons of PersonsService");
+
             var persons = await _personsRepository.GetAllPersons();
 
 
@@ -108,6 +113,8 @@ namespace Services
 
         public async Task<List<PersonResponse>> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder)
         {
+            _logger.LogInformation("GetSortedPersons of PersonsService");
+
             if (string.IsNullOrEmpty(sortBy))
                 return allPersons;
 
@@ -213,7 +220,7 @@ namespace Services
 
             if (person == null) return false;
 
-            await _personsRepository.GetPersonsById(personId.Value);
+            await _personsRepository.DeletePersonById(personId.Value);
 
 
             return true;
