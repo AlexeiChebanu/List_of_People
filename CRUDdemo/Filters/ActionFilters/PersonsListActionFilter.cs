@@ -17,7 +17,7 @@ namespace CRUD.Filters.ActionFilters
         public void OnActionExecuted(ActionExecutedContext context)
         {
             //add after logic here
-            _logger.LogInformation("PersonsOnActionExecuted");
+            _logger.LogInformation("{FilterName}.{MethodName} method",nameof(PersonsListActionFilter), nameof (OnActionExecuted));
             PersonsController personsController = (PersonsController)context.Controller;
 
             IDictionary<string, object?>? parameters = context.HttpContext.Items["arguments"] as IDictionary<string, object?>;
@@ -65,7 +65,7 @@ namespace CRUD.Filters.ActionFilters
         {
             context.HttpContext.Items["arguments"] = context.ActionArguments;
             //add before logic
-            _logger.LogInformation("PersonsOnActionExecuting");
+            _logger.LogInformation("{FilterName}.{MethodName} method", nameof(PersonsListActionFilter), nameof(OnActionExecuting));
 
             if (context.ActionArguments.ContainsKey("searchBy"))
             {
