@@ -10,7 +10,7 @@ using System.Reflection;
 namespace CRUD.Controllers
 {
     [Route("[controller]")]
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller", 3 }, Order = 3)]
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-_Key-From-Controller", "My-_Value-From-Controller", 3 }, Order = 3)]
 
     public class PersonsController : Controller
     {
@@ -29,7 +29,7 @@ namespace CRUD.Controllers
         [Route("[action]")]
         [Route("/")]
         [TypeFilter(typeof(PersonsListActionFilter), Order = 4)]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] {"My-Key-From-Action", "My-Value-From-Action" , 1}, Order = 1)]
+        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] {"My-_Key-From-Action", "My-_Value-From-Action" , 1}, Order = 1)]
         public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName),
             SortOrderOptions sortOrder = SortOrderOptions.Asc)
         {
@@ -51,7 +51,7 @@ namespace CRUD.Controllers
         //while opening the create view
         [Route("[action]")]
         [HttpGet]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "my-Key", "my-Value" })]
+        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "my-_Key", "my-_Value" })]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountry();

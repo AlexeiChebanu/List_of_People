@@ -27,7 +27,7 @@ builder.Services.AddControllersWithViews(op =>
 
 
 
-    op.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 2));
+    op.Filters.Add(new ResponseHeaderActionFilter(logger, "My-_Key-From-Global", "My-_Value-From-Global", 2));
 });
 
 //add services into IoC container
