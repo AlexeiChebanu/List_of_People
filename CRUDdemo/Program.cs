@@ -19,7 +19,7 @@ builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, 
 
 
 
-builder.Services.AddControllersWithViews();/*(op =>
+builder.Services.AddControllersWithViews(op =>
 {
     //op.Filters.Add<ResponseHeaderActionFilter>(7);
 
@@ -28,7 +28,7 @@ builder.Services.AddControllersWithViews();/*(op =>
 
 
     op.Filters.Add(new ResponseHeaderActionFilter(logger, "My-_Key-From-Global", "My-_Value-From-Global", 2));
-});*/
+});
 
 //add services into IoC container
 
