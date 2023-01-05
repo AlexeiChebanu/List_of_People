@@ -54,7 +54,7 @@ namespace Repositories
              .ToListAsync();
         }
 
-        public async Task <Person?> GetPersonsById(Guid personId)
+        public async Task <Person?> GetPersonsByPersonId(Guid personId)
         {
             return await _db.Persons.Include("Country")
              .FirstOrDefaultAsync(temp => temp.PersonID == personId);

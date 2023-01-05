@@ -18,7 +18,7 @@ namespace RepositoryContracts
         /// Returns all countries in the data store
         /// </summary>
         /// <returns>All coutries from the table</returns>
-        Task<List<Country>> GetAllCountries();
+        Task<List<Country>> GetAllCountry();
         /// <summary>
         /// Returns a country obj based on the given country id, otherwise, it returns null
         /// </summary>

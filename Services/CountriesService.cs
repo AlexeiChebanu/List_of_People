@@ -45,14 +45,14 @@ namespace Services
 
             await _countriesRepository.AddCountry(country);
 
-            return country.ToCountryRespone();
+            return country.ToCountryResponse();
         }
 
         public async Task<List<CountryResponse>> GetAllCountry()
         {
-            List<Country> countries = await _countriesRepository.GetAllCountries();
+            List<Country> countries = await _countriesRepository.GetAllCountry();
 
-            return (await _countriesRepository.GetAllCountries()).Select(p => p.ToCountryRespone()).ToList();
+            return countries.Select(country => country.ToCountryResponse()).ToList();
         }
 
         public async Task<CountryResponse?> GetCountryByCountryId(Guid? countryID)
@@ -66,7 +66,7 @@ namespace Services
             if (country_response_from_list == null)
                 return null;
 
-            return country_response_from_list.ToCountryRespone();
+            return country_response_from_list.ToCountryResponse();
         }
 
         public async Task<int> UploadCountriesFromExcelFile(IFormFile formFile)
@@ -77,7 +77,7 @@ namespace Services
 
             using (ExcelPackage excelPackage = new ExcelPackage(memoryStream))
             {
-                ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets["Country"];
+                ExcelWorksheet workSheet = excelPackage.Workbook.Worksheets["Countries"];
 
                 int rowCount = workSheet.Dimension.Rows;
 

@@ -147,7 +147,7 @@ namespace CRUDTests
              .Create();
             PersonResponse person_response_expected = person.ToPersonResponse();
 
-            _personRepositoryMock.Setup(temp => temp.GetPersonsById(It.IsAny<Guid>()))
+            _personRepositoryMock.Setup(temp => temp.GetPersonsByPersonId(It.IsAny<Guid>()))
              .ReturnsAsync(person);
 
             //Act
@@ -439,7 +439,7 @@ namespace CRUDTests
              .ReturnsAsync(person);
 
             _personRepositoryMock
-             .Setup(temp => temp.GetPersonsById(It.IsAny<Guid>()))
+             .Setup(temp => temp.GetPersonsByPersonId(It.IsAny<Guid>()))
              .ReturnsAsync(person);
 
             //Act
@@ -471,7 +471,7 @@ namespace CRUDTests
              .ReturnsAsync(true);
 
             _personRepositoryMock
-             .Setup(temp => temp.GetPersonsById(It.IsAny<Guid>()))
+             .Setup(temp => temp.GetPersonsByPersonId(It.IsAny<Guid>()))
              .ReturnsAsync(person);
 
             //Act

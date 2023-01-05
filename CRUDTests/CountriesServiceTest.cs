@@ -133,7 +133,7 @@ namespace CRUDTests
             //Arrange
             CountryAddRequest country_request = _fixture.Create<CountryAddRequest>();
             Country country = country_request.ToCountry();
-            CountryResponse country_response = country.ToCountryRespone();
+            CountryResponse country_response = country.ToCountryResponse();
 
             _countriesRepositoryMock
              .Setup(temp => temp.AddCountry(It.IsAny<Country>()))
@@ -165,7 +165,7 @@ namespace CRUDTests
 
                 //Arrange
                 List<Country> country_empty_list = new List<Country>();
-                _countriesRepositoryMock.Setup(temp => temp.GetAllCountries()).ReturnsAsync(country_empty_list);
+                _countriesRepositoryMock.Setup(temp => temp.GetAllCountry()).ReturnsAsync(country_empty_list);
 
                 //Act
                 List<CountryResponse> actual_country_response_list = await _countriesService.GetAllCountry();
@@ -186,9 +186,9 @@ namespace CRUDTests
                     .With(temp => temp.Persons, null as List<Person>).Create()
                   };
 
-            List<CountryResponse> country_response_list = country_list.Select(temp => temp.ToCountryRespone()).ToList();
+            List<CountryResponse> country_response_list = country_list.Select(temp => temp.ToCountryResponse()).ToList();
 
-            _countriesRepositoryMock.Setup(temp => temp.GetAllCountries()).ReturnsAsync(country_list);
+            _countriesRepositoryMock.Setup(temp => temp.GetAllCountry()).ReturnsAsync(country_list);
 
             //Act
             List<CountryResponse> actualCountryResponseList = await _countriesService.GetAllCountry();
@@ -230,7 +230,7 @@ namespace CRUDTests
             Country country = _fixture.Build<Country>()
               .With(temp => temp.Persons, null as List<Person>)
               .Create();
-            CountryResponse country_response = country.ToCountryRespone();
+            CountryResponse country_response = country.ToCountryResponse();
 
             _countriesRepositoryMock
              .Setup(temp => temp.GetCountryByCountryId(It.IsAny<Guid>()))

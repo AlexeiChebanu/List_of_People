@@ -36,9 +36,11 @@ namespace CRUD.Filters.ActionFilters
                 else
                 {
                     await next(); //invokes the subsequent filter or action method
-                }
-                    
-                
+                }                   
+            }
+            else
+            {
+                await next();
             }
         }
     }

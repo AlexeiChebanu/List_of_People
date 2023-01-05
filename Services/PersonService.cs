@@ -75,7 +75,7 @@ namespace Services
             if (personID == null)
                 return null;
 
-            Person? person = await _personsRepository.GetPersonsById(personID.Value);
+            Person? person = await _personsRepository.GetPersonsByPersonId(personID.Value);
             if (person == null)
                 return null;
 
@@ -198,14 +198,14 @@ namespace Services
         public async Task<PersonResponse> UpdatePerson(PersonUpdateRequest? personUpdateRequest)
         {
             if (personUpdateRequest == null)
-                throw new ArgumentNullException(nameof(Person));
+                throw new ArgumentNullException(nameof(PersonUpdateRequest));
 
             //validation
             ValidationHelper.ModelValidation(personUpdateRequest);
 
             //get matching person obj to update
             Person? matchingPerson =
-               await _personsRepository.GetPersonsById(personUpdateRequest.PersonID);
+               await _personsRepository.GetPersonsByPersonId(personUpdateRequest.PersonID);
 
             if (matchingPerson == null)
             {
@@ -215,9 +215,10 @@ namespace Services
             //update all details
             matchingPerson.PersonName = personUpdateRequest.PersonName;
             matchingPerson.Email = personUpdateRequest.Email;
-            matchingPerson.Address = personUpdateRequest.Address;
             matchingPerson.DateOfBirth = personUpdateRequest.DateOfBirth;
             matchingPerson.Gender = personUpdateRequest.Gender.ToString();
+            matchingPerson.Address = personUpdateRequest.Address;
+            matchingPerson.CountryID = personUpdateRequest.CountryID;
             matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
 
             await _personsRepository.UpdatePerson(matchingPerson); //upd
@@ -230,7 +231,7 @@ namespace Services
         {
             if (personId == null) throw new ArgumentNullException(nameof(personId));
 
-            Person? person = await _personsRepository.GetPersonsById(personId.Value);
+            Person? person = await _personsRepository.GetPersonsByPersonId(personId.Value);
 
             if (person == null) return false;
 
