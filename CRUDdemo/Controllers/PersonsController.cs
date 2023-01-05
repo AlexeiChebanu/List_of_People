@@ -1,5 +1,6 @@
 ﻿using CRUD.Filters.ActionFilters;
 using CRUD.Filters.Authorization;
+using CRUD.Filters.ExceptionFilter;
 using CRUD.Filters.ResourceFilters;
 using CRUD.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,8 @@ using System.Reflection;
 namespace CRUD.Controllers
 {
     [Route("[controller]")]
-/*    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-_Key-From-Controller", "My-_Value-From-Controller", 3 }, Order = 3)]*/
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-_Key-From-Controller", "My-_Value-From-Controller", 3 }, Order = 3)]
+    [TypeFilter(typeof(HandleExceptionFilter))]
 
     public class PersonsController : Controller
     {
