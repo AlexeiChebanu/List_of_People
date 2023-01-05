@@ -57,8 +57,6 @@ namespace CRUD.Filters.ActionFilters
                 { nameof(PersonResponse.Address), "Address" },
 
             };
-
-
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
