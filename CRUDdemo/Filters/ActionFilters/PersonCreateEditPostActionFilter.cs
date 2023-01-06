@@ -9,10 +9,12 @@ namespace CRUD.Filters.ActionFilters
     public class PersonCreateEditPostActionFilter : IAsyncActionFilter
     {
         private readonly ICountriesService _countriesService;
+        private readonly ILogger<PersonCreateEditPostActionFilter> _logger;
 
-        public PersonCreateEditPostActionFilter(ICountriesService countriesService)
+        public PersonCreateEditPostActionFilter(ICountriesService countriesService, ILogger<PersonCreateEditPostActionFilter> logger)
         {
             _countriesService = countriesService;
+            _logger = logger;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -42,6 +44,8 @@ namespace CRUD.Filters.ActionFilters
             {
                 await next();
             }
+
+            _logger.LogInformation("In after logic of PersonCreateEditPostActionFilter");
         }
     }
 }

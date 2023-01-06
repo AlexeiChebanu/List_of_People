@@ -17,17 +17,13 @@ builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, 
     .ReadFrom.Services(services); //read out current app's services and make them available to serilog
 });
 
-
+builder.Services.AddTransient<ResponseHeaderActionFilter>();
 
 builder.Services.AddControllersWithViews(op =>
 {
-    //op.Filters.Add<ResponseHeaderActionFilter>(7);
-
     var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
-
-
-
-    op.Filters.Add(new ResponseHeaderActionFilter(logger, "My-_Key-From-Global", "My-_Value-From-Global", 2));
+    //op.Filters.Add<ResponseHeaderActionFilter>(7);
+    op.Filters.Add(new ResponseHeaderActionFilter(logger) { Key = "My-Key-From-Global", Value = "My-Value-From-Global", Order = 2 });
 });
 
 //add services into IoC container
@@ -42,6 +38,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddTransient<PersonsListActionFilter>();
 
 builder.Services.AddHttpLogging(op => { op.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders; });
 

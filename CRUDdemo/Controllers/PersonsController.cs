@@ -1,4 +1,5 @@
-﻿using CRUD.Filters.ActionFilters;
+﻿using CRUD.Filters;
+using CRUD.Filters.ActionFilters;
 using CRUD.Filters.Authorization;
 using CRUD.Filters.ExceptionFilter;
 using CRUD.Filters.ResourceFilters;
@@ -14,8 +15,10 @@ using System.Reflection;
 namespace CRUD.Controllers
 {
     [Route("[controller]")]
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-_Key-From-Controller", "My-_Value-From-Controller", 3 }, Order = 3)]
+    //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-_Key-From-Controller", "My-_Value-From-Controller", 3 }, Order = 3)]
+    [ResponseHeaderFilterFactory("My-Key-From-Controller", "My-Value-From-Controller", 3)]
     [TypeFilter(typeof(HandleExceptionFilter))]
+    [TypeFilter(typeof(PersonsAlwaysRunResultFilter))]
 
     public class PersonsController : Controller
     {
@@ -33,9 +36,13 @@ namespace CRUD.Controllers
 
         [Route("[action]")]
         [Route("/")]
-        [TypeFilter(typeof(PersonsListActionFilter), Order = 4)]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-_Key-From-Action", "My-_Value-From-Action", 1 }, Order = 1)]
+        [ServiceFilter(typeof(PersonsListActionFilter), Order = 4)]
+        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 1 }, Order = 1)]
+
+        [ResponseHeaderFilterFactory("My-Key-From-Action", "My-Value-From-Action", 1)]
+
         [TypeFilter(typeof(PersonsListResultFilter))]
+        [SkipFilter]
         public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName),
             SortOrderOptions sortOrder = SortOrderOptions.Asc)
         {
@@ -59,7 +66,7 @@ namespace CRUD.Controllers
         //while opening the create view
         [Route("[action]")]
         [HttpGet]
-        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "my-_Key", "my-_Value", 4 })]
+        [ResponseHeaderFilterFactory("my-Key", "my-Value", 4)]
         public async Task<IActionResult> Create()
         {
             List<CountryResponse> countries = await _countriesService.GetAllCountry();
@@ -87,7 +94,7 @@ namespace CRUD.Controllers
 
         [HttpGet]
         [Route("[action]/{personID}")] //Eg: /persons/edit/1
-        [TypeFilter(typeof(TokenResultFilter))]
+        //[TypeFilter(typeof(TokenResultFilter))]
         public async Task<IActionResult> Edit(Guid personID)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personID);
@@ -109,7 +116,7 @@ namespace CRUD.Controllers
         [HttpPost]
         [Route("[action]/{personID}")]
         [TypeFilter(typeof(PersonCreateEditPostActionFilter))]
-        [TypeFilter(typeof(TokenAuthorizationFilter))]
+        //[TypeFilter(typeof(TokenAuthorizationFilter))]       
         public async Task<IActionResult> Edit(PersonUpdateRequest personRequest)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personRequest.PersonID);
