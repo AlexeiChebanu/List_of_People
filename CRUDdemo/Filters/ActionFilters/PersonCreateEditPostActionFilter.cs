@@ -4,6 +4,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
+/*Notation
+ * Action Filter
+
+ * Manipulating & validating the action method parameters.
+
+ * Manipulating the ViewData.
+
+ * Overriding the IActionResult provided by action method.*/
+
 namespace CRUD.Filters.ActionFilters
 {
     public class PersonCreateEditPostActionFilter : IAsyncActionFilter

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using System.Runtime.CompilerServices;
 
 namespace CRUD.Filters.ActionFilters
 {
@@ -25,7 +24,7 @@ namespace CRUD.Filters.ActionFilters
             filter.Key = Key;
             filter.Value = Value;
             filter.Order = Order;
-            //retrurn filter obj
+            //return filter obj
             return filter;
         }
     }

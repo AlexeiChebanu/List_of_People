@@ -1,6 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+/*Resource Filter
+
+Invoking custom model binder explicitly
+
+Caching the response.*/
+
 namespace CRUD.Filters.ResourceFilters
 {
     public class FeatureDisableResourceFilter : IAsyncResourceFilter

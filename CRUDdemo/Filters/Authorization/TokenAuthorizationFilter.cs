@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+/*Authorization Filter
+
+Determines whether the user is authorized to access the action method.*/
+
 namespace CRUD.Filters.Authorization
 {
     public class TokenAuthorizationFilter : IAuthorizationFilter

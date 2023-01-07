@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+/*Exception Filter
 
+Handling unhandled exception that occur in model binding, action filters or action methods.*/
 namespace CRUD.Filters.ExceptionFilter
 {
     public class HandleExceptionFilter : IExceptionFilter
