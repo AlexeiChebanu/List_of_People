@@ -19,6 +19,7 @@ using RepositoryContracts;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SerilogTimings;
+using Exceptions;
 
 namespace Services
 {
@@ -209,7 +210,7 @@ namespace Services
 
             if (matchingPerson == null)
             {
-                throw new ArgumentException("Given person id doesnt exist");
+                throw new InvalidPersonIdException("Given person id doesnt exist");
             }
 
             //update all details

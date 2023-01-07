@@ -93,7 +93,7 @@ namespace CRUD.Controllers
 
         [HttpGet]
         [Route("[action]/{personID}")] //Eg: /persons/edit/1
-        //[TypeFilter(typeof(TokenResultFilter))]
+        [TypeFilter(typeof(TokenResultFilter))]
         public async Task<IActionResult> Edit(Guid personID)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personID);
@@ -103,7 +103,6 @@ namespace CRUD.Controllers
             }
 
             PersonUpdateRequest personUpdateRequest = personResponse.ToPersonUpdateRequest();
-
 
             List<CountryResponse> countries = await _countriesService.GetAllCountry();
             ViewBag.Countries = countries.Select(temp =>
@@ -115,7 +114,7 @@ namespace CRUD.Controllers
         [HttpPost]
         [Route("[action]/{personID}")]
         [TypeFilter(typeof(PersonCreateEditPostActionFilter))]
-        //[TypeFilter(typeof(TokenAuthorizationFilter))]       
+        [TypeFilter(typeof(TokenAuthorizationFilter))]       
         public async Task<IActionResult> Edit(PersonUpdateRequest personRequest)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personRequest.PersonID);

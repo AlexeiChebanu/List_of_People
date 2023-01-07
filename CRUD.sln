@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceContracts", "Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{2EF09F39-BC58-4BAF-A188-4303DBFE9FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{076D6D53-3A7F-4AA9-A921-4C07AA410A06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{076D6D53-3A7F-4AA9-A921-4C07AA410A06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{069D8BA3-DCFF-4125-8CA9-F26566FBBC16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{069D8BA3-DCFF-4125-8CA9-F26566FBBC16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{DCBACA47-B878-466B-82F4-CA4D27729B20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{069D8BA3-DCFF-4125-8CA9-F26566FBBC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{069D8BA3-DCFF-4125-8CA9-F26566FBBC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{069D8BA3-DCFF-4125-8CA9-F26566FBBC16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCBACA47-B878-466B-82F4-CA4D27729B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCBACA47-B878-466B-82F4-CA4D27729B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCBACA47-B878-466B-82F4-CA4D27729B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCBACA47-B878-466B-82F4-CA4D27729B20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
