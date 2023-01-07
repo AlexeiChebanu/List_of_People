@@ -19,9 +19,11 @@ namespace CRUD.Filters.ActionFilters
         {
             //add after logic here
             _logger.LogInformation("{FilterName}.{MethodName} method",nameof(PersonsListActionFilter), nameof (OnActionExecuted));
+
             PersonsController personsController = (PersonsController)context.Controller;
 
-            IDictionary<string, object?>? parameters = context.HttpContext.Items["arguments"] as IDictionary<string, object?>;
+
+            IDictionary<string, object?>? parameters = (IDictionary<string, object?>?)context.HttpContext.Items["arguments"];
 
             if (parameters != null)
             {

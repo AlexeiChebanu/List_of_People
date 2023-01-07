@@ -82,7 +82,7 @@ namespace Services
             return person.ToPersonResponse();
         }
 
-        public async Task<List<PersonResponse>> GetFilterdPersons(string searchBy, string? searchString)
+        public async Task<List<PersonResponse>> GetFilteredPersons(string searchBy, string? searchString)
         {
             _logger.LogInformation("GetFilteredPersons of PersonsService");
             List<Person> persons;

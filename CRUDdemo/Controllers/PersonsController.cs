@@ -37,9 +37,8 @@ namespace CRUD.Controllers
         [Route("[action]")]
         [Route("/")]
         [ServiceFilter(typeof(PersonsListActionFilter), Order = 4)]
-        //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 1 }, Order = 1)]
 
-        [ResponseHeaderFilterFactory("My-Key-From-Action", "My-Value-From-Action", 1)]
+        [ResponseHeaderFilterFactory("MyKey-FromAction", "MyValue-From-Action", 1)]
 
         [TypeFilter(typeof(PersonsListResultFilter))]
         [SkipFilter]
@@ -53,7 +52,7 @@ namespace CRUD.Controllers
             //Search
 
 
-            List<PersonResponse> persons = await _personsService.GetFilterdPersons(searchBy, searchString);
+            List<PersonResponse> persons = await _personsService.GetFilteredPersons(searchBy, searchString);
 
             //Sort
             List<PersonResponse> sortedPersons = await _personsService.GetSortedPersons(persons, sortBy, sortOrder);

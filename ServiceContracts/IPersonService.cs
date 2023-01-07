@@ -34,7 +34,7 @@ namespace ServiceContracts
         /// <param name="searchBy">Search field to search </param>
         /// <param name="searchString">Search string to search</param>
         /// <returns>returns all matching persons based on the given search and search string</returns>
-        Task<List<PersonResponse>> GetFilterdPersons(string searchBy, string? searchString);
+        Task<List<PersonResponse>> GetFilteredPersons(string searchBy, string? searchString);
 
         /// <summary>
         /// Returns sorted list of persons

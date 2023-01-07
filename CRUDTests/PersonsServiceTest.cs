@@ -166,10 +166,8 @@ namespace CRUDTests
         public async Task GetAllPersons_IsEmpty()
         {
             //Arrange
-            List<Person> persons = new List<Person>();
-            _personRepositoryMock
-             .Setup(temp => temp.GetAllPersons())
-             .ReturnsAsync(persons);
+            var persons = new List<Person>();
+            _personRepositoryMock.Setup(temp => temp.GetAllPersons()).ReturnsAsync(persons);
 
             //Act
             List<PersonResponse> persons_from_get = await _personService.GetAllPersons();
@@ -245,7 +243,7 @@ namespace CRUDTests
             _personRepositoryMock.Setup(t => t.GetFillteredPersons(It.IsAny<Expression<Func<Person, bool>>>())).ReturnsAsync(persons);
             //Act
 
-            List<PersonResponse> persons_list_from_search = await _personService.GetFilterdPersons(nameof(Person.PersonName), "");
+            List<PersonResponse> persons_list_from_search = await _personService.GetFilteredPersons(nameof(Person.PersonName), "");
 
             //print person_response_list_from_add
             foreach (PersonResponse item in persons_list_from_search)
@@ -284,7 +282,7 @@ namespace CRUDTests
             _personRepositoryMock.Setup(t => t.GetFillteredPersons(It.IsAny<Expression<Func<Person, bool>>>())).ReturnsAsync(persons);
             //Act
 
-            List<PersonResponse> persons_list_from_search = await _personService.GetFilterdPersons(nameof(Person.PersonName), "sa");
+            List<PersonResponse> persons_list_from_search = await _personService.GetFilteredPersons(nameof(Person.PersonName), "sa");
 
             //print person_response_list_from_add
             foreach (PersonResponse item in persons_list_from_search)
