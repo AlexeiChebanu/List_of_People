@@ -29,10 +29,10 @@ namespace CRUD.Controllers
         private readonly IPersonAdderService _personsAdderService;
         private readonly IPersonSorterService _personsSorterService;
 
-        private readonly ICountriesService _countriesService;
+        private readonly ICountriesGetterService _countriesService;
         private readonly ILogger<PersonsController> _logger;
 
-        public PersonsController(IPersonGetterService personsGetterService, IPersonAdderService personAdderService, IPersonDeleterService personDeleterService, IPersonSorterService personSorterService, IPersonUpdaterService personUpdaterService, ICountriesService countriesService, ILogger<PersonsController> logger)
+        public PersonsController(IPersonGetterService personsGetterService, IPersonAdderService personAdderService, IPersonDeleterService personDeleterService, IPersonSorterService personSorterService, IPersonUpdaterService personUpdaterService, ICountriesGetterService countriesService, ILogger<PersonsController> logger)
         {
             _personsService = personsGetterService;
             _countriesService = countriesService;

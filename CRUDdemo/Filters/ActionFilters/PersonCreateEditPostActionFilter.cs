@@ -17,10 +17,10 @@ namespace CRUD.Filters.ActionFilters
 {
     public class PersonCreateEditPostActionFilter : IAsyncActionFilter
     {
-        private readonly ICountriesService _countriesService;
+        private readonly ICountriesGetterService _countriesService;
         private readonly ILogger<PersonCreateEditPostActionFilter> _logger;
 
-        public PersonCreateEditPostActionFilter(ICountriesService countriesService, ILogger<PersonCreateEditPostActionFilter> logger)
+        public PersonCreateEditPostActionFilter(ICountriesGetterService countriesService, ILogger<PersonCreateEditPostActionFilter> logger)
         {
             _countriesService = countriesService;
             _logger = logger;

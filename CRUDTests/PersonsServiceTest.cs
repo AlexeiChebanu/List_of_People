@@ -1,38 +1,30 @@
 ﻿using ServiceContracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 using Services;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 using Xunit.Abstractions;
 using Entities;
-using Microsoft.EntityFrameworkCore;
-using EntityFrameworkCoreMock;
 using AutoFixture;
 using FluentAssertions;
 using RepositoryContracts;
 using Moq;
-using OfficeOpenXml.FormulaParsing.ExpressionGraph;
 using System.Linq.Expressions;
-using CRUD.Controllers;
 using Microsoft.Extensions.Logging;
-using Serilog.Extensions.Hosting;
 using Serilog;
 
 namespace CRUDTests
 {
     public class PersonsServiceTest
     {
-        private readonly IPersonGetterService _personService;
+        private readonly IPersonGetterService _personGetterService;
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly IFixture _fixture;
         private readonly IPersonsRepository _personsRepository;
         private readonly Mock<IPersonsRepository> _personRepositoryMock;
-
+        private readonly IPersonDeleterService _personsDeleterService;
+        private readonly IPersonUpdaterService _personsUpdaterService;
+        private readonly IPersonAdderService _personsAdderService;
+        private readonly IPersonSorterService _personsSorterService;
         public PersonsServiceTest(ITestOutputHelper testOutputHelper)
         {
             _fixture = new Fixture();
@@ -41,7 +33,15 @@ namespace CRUDTests
             var diagnosticContextMock = new Mock<IDiagnosticContext>();
             var loggerMock = new Mock<ILogger<PersonGetterService>>();
 
-            _personService = new PersonService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+            _personGetterService = new PersonGetterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+
+            _personsAdderService = new PersonAdderService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+
+            _personsDeleterService = new PersonDeleterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+
+            _personsSorterService = new PersonSorterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+
+            _personsUpdaterService = new PersonUpdaterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
 
             _testOutputHelper = testOutputHelper;
         }
@@ -58,7 +58,7 @@ namespace CRUDTests
 
             Func<Task> action = async () =>
             {
-               await  _personService.AddPerson(personAddRequest);
+               await  _personsAdderService.AddPerson(personAddRequest);
             };
 
             await action.Should().ThrowAsync<ArgumentNullException>();
@@ -78,7 +78,7 @@ namespace CRUDTests
 
            Func<Task> action = async() =>
             {
-                await _personService.AddPerson(personAddRequest);
+                await _personsAdderService.AddPerson(personAddRequest);
             };
 
             await action.Should().ThrowAsync<ArgumentException>();
@@ -103,7 +103,7 @@ namespace CRUDTests
 
             //Act
             PersonResponse person_response_from_add =
-               await _personService.AddPerson(personAddRequest);
+               await _personsAdderService.AddPerson(personAddRequest);
 
             personResponse_expected.PersonID = person_response_from_add.PersonID;
             //Assert
@@ -129,7 +129,7 @@ namespace CRUDTests
 
             //Act
             PersonResponse? personResponseFromGet =
-                await _personService.GetPersonByPersonID(personID);
+                await _personGetterService.GetPersonByPersonID(personID);
 
             //Asssert
             personResponseFromGet.Should().BeNull();
@@ -151,7 +151,7 @@ namespace CRUDTests
              .ReturnsAsync(person);
 
             //Act
-            PersonResponse? person_response_from_get = await _personService.GetPersonByPersonID(person.PersonID);
+            PersonResponse? person_response_from_get = await _personGetterService.GetPersonByPersonID(person.PersonID);
 
             //Assert
             person_response_from_get.Should().Be(person_response_expected);
@@ -170,7 +170,7 @@ namespace CRUDTests
             _personRepositoryMock.Setup(temp => temp.GetAllPersons()).ReturnsAsync(persons);
 
             //Act
-            List<PersonResponse> persons_from_get = await _personService.GetAllPersons();
+            List<PersonResponse> persons_from_get = await _personGetterService.GetAllPersons();
 
             //Assert
             persons_from_get.Should().BeEmpty();
@@ -201,7 +201,7 @@ namespace CRUDTests
             }
             _personRepositoryMock.Setup(t => t.GetAllPersons()).ReturnsAsync(persons);
             //Act
-            List<PersonResponse> persons_list_from_get = await _personService.GetAllPersons();
+            List<PersonResponse> persons_list_from_get = await _personGetterService.GetAllPersons();
 
             //print person_response_list_from_add
             foreach (PersonResponse item in persons_list_from_get)
@@ -243,7 +243,7 @@ namespace CRUDTests
             _personRepositoryMock.Setup(t => t.GetFillteredPersons(It.IsAny<Expression<Func<Person, bool>>>())).ReturnsAsync(persons);
             //Act
 
-            List<PersonResponse> persons_list_from_search = await _personService.GetFilteredPersons(nameof(Person.PersonName), "");
+            List<PersonResponse> persons_list_from_search = await _personGetterService.GetFilteredPersons(nameof(Person.PersonName), "");
 
             //print person_response_list_from_add
             foreach (PersonResponse item in persons_list_from_search)
@@ -282,7 +282,7 @@ namespace CRUDTests
             _personRepositoryMock.Setup(t => t.GetFillteredPersons(It.IsAny<Expression<Func<Person, bool>>>())).ReturnsAsync(persons);
             //Act
 
-            List<PersonResponse> persons_list_from_search = await _personService.GetFilteredPersons(nameof(Person.PersonName), "sa");
+            List<PersonResponse> persons_list_from_search = await _personGetterService.GetFilteredPersons(nameof(Person.PersonName), "sa");
 
             //print person_response_list_from_add
             foreach (PersonResponse item in persons_list_from_search)
@@ -328,9 +328,9 @@ namespace CRUDTests
                 _testOutputHelper.WriteLine(item.ToString());
             }
 
-            List<PersonResponse> allPersons = await _personService.GetAllPersons();
+            List<PersonResponse> allPersons = await _personGetterService.GetAllPersons();
             //Act
-            List<PersonResponse> persons_list_from_sort = await _personService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.Desc);
+            List<PersonResponse> persons_list_from_sort = await _personsSorterService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.Desc);
 
             //print person_response_list_from_get
             foreach (PersonResponse item in persons_list_from_sort)
@@ -366,7 +366,7 @@ namespace CRUDTests
             Func<Task> action = async () =>
             {
                 //Act
-                await _personService.UpdatePerson(personUpdateRequest);
+                await _personsUpdaterService.UpdatePerson(personUpdateRequest);
             };
 
            await action.Should().ThrowAsync<ArgumentNullException>();
@@ -383,7 +383,7 @@ namespace CRUDTests
             Func<Task> action = async () =>
             {
                 //Act
-                await _personService.UpdatePerson(personUpdateRequest);
+                await _personsUpdaterService.UpdatePerson(personUpdateRequest);
 
             };
 
@@ -410,7 +410,7 @@ namespace CRUDTests
             //Act
             var action = async () =>
             {
-                await _personService.UpdatePerson(person_update_request);
+                await _personsUpdaterService.UpdatePerson(person_update_request);
             };
 
             //Assert
@@ -441,7 +441,7 @@ namespace CRUDTests
              .ReturnsAsync(person);
 
             //Act
-            PersonResponse person_response_from_update = await _personService.UpdatePerson(person_update_request);
+            PersonResponse person_response_from_update = await _personsUpdaterService.UpdatePerson(person_update_request);
 
             //Assert
             person_response_from_update.Should().Be(person_response_expected);
@@ -473,7 +473,7 @@ namespace CRUDTests
              .ReturnsAsync(person);
 
             //Act
-            bool isDeleted = await _personService.DeletePerson(person.PersonID);
+            bool isDeleted = await _personsDeleterService.DeletePerson(person.PersonID);
 
             //Assert
             isDeleted.Should().BeTrue();
@@ -485,7 +485,7 @@ namespace CRUDTests
         public async Task DeletePerson_isEmpty()
         {
             //Act
-            bool isDeleted = await _personService.DeletePerson(Guid.NewGuid());
+            bool isDeleted = await _personsDeleterService.DeletePerson(Guid.NewGuid());
 
             //Assert
 
