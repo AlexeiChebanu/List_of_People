@@ -23,15 +23,25 @@ namespace CRUD.Controllers
     public class PersonsController : Controller
     {
         //private fields
-        private readonly IPersonService _personsService;
+        private readonly IPersonGetterService _personsService;
+        private readonly IPersonDeleterService _personsDeleterService;
+        private readonly IPersonUpdaterService _personsUpdaterService;
+        private readonly IPersonAdderService _personsAdderService;
+        private readonly IPersonSorterService _personsSorterService;
+
         private readonly ICountriesService _countriesService;
         private readonly ILogger<PersonsController> _logger;
 
-        public PersonsController(IPersonService personsService, ICountriesService countriesService, ILogger<PersonsController> logger)
+        public PersonsController(IPersonGetterService personsGetterService, IPersonAdderService personAdderService, IPersonDeleterService personDeleterService, IPersonSorterService personSorterService, IPersonUpdaterService personUpdaterService, ICountriesService countriesService, ILogger<PersonsController> logger)
         {
-            _personsService = personsService;
+            _personsService = personsGetterService;
             _countriesService = countriesService;
             _logger = logger;
+            _personsAdderService = personAdderService;
+            _personsUpdaterService = personUpdaterService;
+            _personsSorterService = personSorterService;
+            _personsDeleterService = personDeleterService;
+
         }
 
         [Route("[action]")]
@@ -55,7 +65,7 @@ namespace CRUD.Controllers
             List<PersonResponse> persons = await _personsService.GetFilteredPersons(searchBy, searchString);
 
             //Sort
-            List<PersonResponse> sortedPersons = await _personsService.GetSortedPersons(persons, sortBy, sortOrder);
+            List<PersonResponse> sortedPersons = await _personsSorterService.GetSortedPersons(persons, sortBy, sortOrder);
 
 
             return View(sortedPersons);
@@ -85,7 +95,7 @@ namespace CRUD.Controllers
         {
             
             //call the service method
-            PersonResponse personResponse = await _personsService.AddPerson(personRequest);
+            PersonResponse personResponse = await _personsAdderService.AddPerson(personRequest);
 
             //navigate to Index() action method(it makes another ger request to "persons/indexf")
             return RedirectToAction("Index", "Persons");
@@ -124,8 +134,8 @@ namespace CRUD.Controllers
                 return RedirectToAction("Index");
             }
 
-                PersonResponse updatedPerson = await _personsService.UpdatePerson(personRequest);
-                return RedirectToAction("Index");
+            PersonResponse updatedPerson = await _personsUpdaterService.UpdatePerson(personRequest);
+            return RedirectToAction("Index");
             
         }
 
@@ -152,7 +162,7 @@ namespace CRUD.Controllers
                 return RedirectToAction("Index");
             }
 
-           await _personsService.DeletePerson(personUpdateRequest.PersonID);
+           await _personsDeleterService.DeletePerson(personUpdateRequest.PersonID);
 
             return RedirectToAction("Index");
         }
