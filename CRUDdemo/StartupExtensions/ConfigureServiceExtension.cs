@@ -31,8 +31,6 @@ namespace CRUD
             services.AddScoped<ICountriesGetterService, CountriesGetterService>();
             services.AddScoped<ICountriesUploaderService, CountriesUploadService>();
 
-
-
             services.AddScoped<IPersonGetterService, PersonGetterService>();
             services.AddScoped<IPersonAdderService, PersonAdderService>();
             services.AddScoped<IPersonSorterService, PersonSorterService>();
